@@ -36,7 +36,6 @@ do
     echo "$instance : $IP"
 done
 
-
 ZONE_ID=$(aws route53 create-hosted-zone \
   --name udaykiran.site \
   --caller-reference "$(date +%s)" \
@@ -46,12 +45,18 @@ ZONE_ID=$(aws route53 create-hosted-zone \
 
 echo $ZONE_ID
 
+
+# DOMAIN="udaykiran.site"
+
+# RECORD_NAME="${instance}.${DOMAIN}"
+
+RECORD_NAME="${instance}"
 aws route53 change-resource-record-sets \
   --hosted-zone-id $ZONE_ID \
   --change-batch '{
     "Changes": [
       {
-        "Action": "CREATE",
+        "Action": "UPSERT",
         "ResourceRecordSet": {
           "Name": "'$RECORD_NAME'",
           "Type": "A",
