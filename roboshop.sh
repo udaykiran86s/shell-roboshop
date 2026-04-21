@@ -2,7 +2,8 @@
 
 AMI_ID="ami-0220d79f3f480ecf5"
 SG_ID="sg-08bc7d23acfac1667"
-
+ZONE_ID="Z091010033ZLKB3ZDRT62"
+DOMAIN_NAME="udaykiran.site"
 for instance in "$@"
 do 
     echo "Creating instance: $instance"
@@ -34,7 +35,7 @@ do
     fi
 
     echo "$instance : $IP"
-done
+
 
 # ZONE_ID=$(aws route53 create-hosted-zone \
 #   --name udaykiran.site \
@@ -46,17 +47,15 @@ done
 # echo $ZONE_ID
 
 
-DOMAIN="udaykiran.site"
 
-RECORD_NAME="${instance}.${DOMAIN}"
 
-RECORD_NAME="${instance}"
+RECORD_NAME="${instance}.${DOMAIN_NAME}"
 aws route53 change-resource-record-sets \
   --hosted-zone-id $ZONE_ID \
   --change-batch '{
     "Changes": [
       {
-        "Action": "UPSERT",
+        "Action": "CREATE",
         "ResourceRecordSet": {
           "Name": "'$RECORD_NAME'",
           "Type": "A",
@@ -70,3 +69,6 @@ aws route53 change-resource-record-sets \
       }
     ]
   }'
+
+  
+done
