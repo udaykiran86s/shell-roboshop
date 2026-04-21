@@ -19,23 +19,23 @@ if [ $USERID -ne 0 ];then
 fi
 
 VALIDATE() {
-    if [ $1 -ne 0 ] ; then
-        echo -e "$2..... $r failed $n | tee -a $LOG_FILE
+    if [ $1 -ne 0 ]; then
+        echo -e "$2..... $r failed $n" | tee -a $LOG_FILE
         exit 1
-else 
-    echo -e "$2 is   $g success $n" | tee -a $LOG_FILE
+    else 
+        echo -e "$2 is....   $g success $n" | tee -a $LOG_FILE
     fi
 }
 
 cp mongo.repo /etc/yum.repos.d/mongo.repo
 VALIDATE $? "ADDING MONGO REPO"
 
-dnf install mongodb.org -y &>>$LOG_FILE
+dnf install mongodb-org -y &>>$LOG_FILE
 VALIDATE $? "installing mongodb"
 
-systemctl enable mongod$>>LOG_FILE
+systemctl enable mongod &>>$LOG_FILE
 VALIDATE $? "ENABLED MONGODB"
 
-systemctl start mongod
+systemctl start mongod  
 VALIDATE $? "MONGODB STARTING"
 
