@@ -55,7 +55,7 @@ aws route53 change-resource-record-sets \
   --change-batch '{
     "Changes": [
       {
-        "Action": "CREATE",
+        "Action": "UPSERT",
         "ResourceRecordSet": {
           "Name": "'$RECORD_NAME'",
           "Type": "A",
