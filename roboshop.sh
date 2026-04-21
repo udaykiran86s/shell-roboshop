@@ -36,19 +36,19 @@ do
     echo "$instance : $IP"
 done
 
-ZONE_ID=$(aws route53 create-hosted-zone \
-  --name udaykiran.site \
-  --caller-reference "$(date +%s)" \
-  --hosted-zone-config Comment="Public Hosted Zone",PrivateZone=false \
-  --query 'HostedZone.Id' \
-  --output text | cut -d'/' -f3)
+# ZONE_ID=$(aws route53 create-hosted-zone \
+#   --name udaykiran.site \
+#   --caller-reference "$(date +%s)" \
+#   --hosted-zone-config Comment="Public Hosted Zone",PrivateZone=false \
+#   --query 'HostedZone.Id' \
+#   --output text | cut -d'/' -f3)
 
-echo $ZONE_ID
+# echo $ZONE_ID
 
 
-# DOMAIN="udaykiran.site"
+DOMAIN="udaykiran.site"
 
-# RECORD_NAME="${instance}.${DOMAIN}"
+RECORD_NAME="${instance}.${DOMAIN}"
 
 RECORD_NAME="${instance}"
 aws route53 change-resource-record-sets \
