@@ -1,4 +1,7 @@
 #!/bin/bash
+set -euo pipefail
+
+trap 'echo "There is an error in $LINENO, Command is: $BASH_COMMAND"' ERR
 
 USERID=$(id -u)
 r="\e[31m"
@@ -19,29 +22,29 @@ if [ $USERID -ne 0 ];then
     exit 1
 fi
 
-VALIDATE() {
-    if [ "$1" -ne 0 ]; then
-        echo -e "$2..... $r failed $n" | tee -a $LOG_FILE
-        exit 1
-    else 
-        echo -e "$2 is....   $g success $n" | tee -a $LOG_FILE
-    fi
-}
+# VALIDATE() {
+#     if [ "$1" -ne 0 ]; then
+#         echo -e "$2..... $r failed $n" | tee -a $LOG_FILE
+#         exit 1
+#     else 
+#         echo -e "$2 is....   $g success $n" | tee -a $LOG_FILE
+#     fi
+# }
 
 cp $SCRIPT_DIR/mongo.repo /etc/yum.repos.d/mongo.repo
-VALIDATE $? "ADDING MONGO REPO"
+# VALIDATE $? "ADDING MONGO REPO"
 
 dnf install mongodb-org -y &>>$LOG_FILE
-VALIDATE $? "installing mongodb"
+# VALIDATE $? "installing mongodb"
 
 systemctl enable mongod &>>$LOG_FILE
-VALIDATE $? "ENABLED MONGODB"
+# VALIDATE $? "ENABLED MONGODB"
 
 systemctl start mongod  
-VALIDATE $? "MONGODB STARTING"
+# VALIDATE $? "MONGODB STARTING"
 
 sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongod.conf
-VALIDATE $? "ALLOWING REMOTE CONNECTIONS TO MONGODB"
+# VALIDATE $? "ALLOWING REMOTE CONNECTIONS TO MONGODB"
 
 systemctl restart mongod
-VALIDATE $? "MONGO RESTART"
+#  VALIDATE $? "MONGO RESTART"
