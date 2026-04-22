@@ -20,7 +20,7 @@ if [ $USERID -ne 0 ];then
 fi
 
 VALIDATE() {
-    if [ $1 -ne 0 ]; then
+    if [ "$1" -ne 0 ]; then
         echo -e "$2..... $r failed $n" | tee -a $LOG_FILE
         exit 1
     else 
