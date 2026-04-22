@@ -19,6 +19,8 @@ do
 
     if [ "$INSTANCE_ID" == "None" ] || [ -z "$INSTANCE_ID" ]; then
         echo "Creating instance: $instance"
+    
+
 
         INSTANCE_ID=$(aws ec2 run-instances \
         --image-id $AMI_ID \
@@ -28,11 +30,15 @@ do
         --query 'Instances[0].InstanceId' \
         --output text) 
 
-    echo "Instance ID: $INSTANCE_ID"
+   
 
     # Wait until instance is running
     aws ec2 wait instance-running --instance-ids $INSTANCE_ID
+    else
+        echo "Instance already exists: $INSTANCE_ID"
+    fi
 
+    echo "Instance ID: $INSTANCE_ID"
     # Get IP
     if [ "$instance" != "frontend" ]; then
         IP=$(aws ec2 describe-instances \
