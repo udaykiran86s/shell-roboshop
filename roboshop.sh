@@ -2,7 +2,7 @@
 
 AMI_ID="ami-0220d79f3f480ecf5"
 SG_ID="sg-08bc7d23acfac1667"
-ZONE_ID="Z0972908347DA0WD6DZM9"
+ZONE_ID="Z03710831AO6BKS1FD2S7"
 DOMAIN_NAME="udaykiran.site"
 
 
@@ -67,26 +67,26 @@ do
 
 
 
-# RECORD_NAME="${instance}.${DOMAIN_NAME}"
-# aws route53 change-resource-record-sets \
-#   --hosted-zone-id $ZONE_ID \
-#   --change-batch '{
-#     "Changes": [
-#       {
-#         "Action": "UPSERT",
-#         "ResourceRecordSet": {
-#           "Name": "'$RECORD_NAME'",
-#           "Type": "A",
-#           "TTL": 1,
-#           "ResourceRecords": [
-#             {
-#               "Value": "'$IP'"
-#             }
-#           ]
-#         }
-#       }
-#     ]
-#   }'
+RECORD_NAME="${instance}.${DOMAIN_NAME}"
+aws route53 change-resource-record-sets \
+  --hosted-zone-id $ZONE_ID \
+  --change-batch '{
+    "Changes": [
+      {
+        "Action": "UPSERT",
+        "ResourceRecordSet": {
+          "Name": "'$RECORD_NAME'",
+          "Type": "A",
+          "TTL": 1,
+          "ResourceRecords": [
+            {
+              "Value": "'$IP'"
+            }
+          ]
+        }
+      }
+    ]
+  }'
 
   
 done
