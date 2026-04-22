@@ -4,11 +4,23 @@ AMI_ID="ami-0220d79f3f480ecf5"
 SG_ID="sg-08bc7d23acfac1667"
 ZONE_ID="Z091010033ZLKB3ZDRT62"
 DOMAIN_NAME="udaykiran.site"
+
+
 for instance in "$@"
 do 
-    echo "Creating instance: $instance"
+    echo "processing : $instance"
+    # CHECK IF INSTANCE EXISTS
+    # -----------------------------
+    INSTANCE_ID=$(aws ec2 describe-instances \
+        --filters "Name=tag:Name,Values=$instance" \
+                  "Name=instance-state-name,Values=running,pending,stopped" \
+        --query 'Reservations[0].Instances[0].InstanceId' \
+        --output text 2>/dev/null)
 
-    INSTANCE_ID=$(aws ec2 run-instances \
+    if [ "$INSTANCE_ID" == "None" ] || [ -z "$INSTANCE_ID" ]; then
+        echo "Creating instance: $instance"
+
+        INSTANCE_ID=$(aws ec2 run-instances \
         --image-id $AMI_ID \
         --instance-type t3.micro \
         --security-group-ids $SG_ID \
